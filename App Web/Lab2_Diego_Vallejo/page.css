@@ -1,0 +1,28 @@
+
+.title {
+    font-family: 'Calibri';
+    font-size: 28px;
+}
+.sidebar{
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    padding: 25px;
+}
+.info{
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    padding: 25px;
+}
+.navbar{
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    padding: 25px;
+}
+.navitem{
+    font-size: large;
+}
+.footer{
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    padding: 25px;
+}
