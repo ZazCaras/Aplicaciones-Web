@@ -1,0 +1,22 @@
+#horizontal_bar {
+    background-color: #80041c;
+    
+}
+#img_title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+#title_u {
+    color: white;
+    padding: 20px;
+    margin-left: 340px;
+}
+#main_text {
+    padding: 100px 100px 10px 100px;
+    border-bottom: solid;
+    border-bottom-color: gray;
+}
+#form {
+    padding: 20px 100px 10px 100px;
+}
