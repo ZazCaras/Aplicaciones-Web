@@ -15,14 +15,18 @@ de tipo void, por medio de return.
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <iostream> 
+
+using namespace std;
+
 
 void *calculos(void* argument){
 	
-	long long input;
-	input = (long long) argument;
+	float input;
+	input = *(float *) &argument;
 	
-	long long output;
-	output = input*2;
+	float* output;
+	*output = input*2;
 	return (void*) output;
 }
 int main(){
@@ -35,14 +39,14 @@ int main(){
 	pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 	
 	void *exit_value;
-	unsigned int result = 1;
+	float result = 1;
 	
-	for(long long i = 0; i < 100; i++){
-		pthread_create(&thread_id, &attr, calculos, (void*)i);
+	for(float i = 0; i < 100; i++){
+		pthread_create(&thread_id, &attr, calculos, (void*)&i);
 		pthread_join(thread_id, &exit_value);
 		
-		long long result = (long long) exit_value;
-		printf("Resultado multiplicaciÃ³n es: %lld\n ", result);
+		float result = *(float *) exit_value;
+		cout << "Resultado multiplicaciÃ³n es: \n " << result <<endl;
 	}
 	
 	pthread_attr_destroy(&attr);
