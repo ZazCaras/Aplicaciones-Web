@@ -23,11 +23,14 @@ using namespace std;
 void *calculos(void* argument){
 	
 	float input;
-	input = *(float *) &argument;
-	
-	float* output;
-	*output = input*2;
-	return (void*) output;
+	input = *(float *) &argument; 
+	//puntero a void -> puntero a puntero a void -> cast de puntero a float de puntero a puntero a void -> desreferencia de puntero a float
+
+
+	float output;
+	output = input*2;
+	return *(void**) &output;
+	//float -> puntero a float -> doble a puntero a void -> desreferencia de doble puntero a void para tener un unico puntero a void
 }
 int main(){
 
@@ -41,12 +44,12 @@ int main(){
 	void *exit_value;
 	float result = 1;
 	
-	for(float i = 0; i < 100; i++){
-		pthread_create(&thread_id, &attr, calculos, (void*)&i);
+	for(float i = 0.7; i < 100; i++){
+		pthread_create(&thread_id, &attr, calculos, *(void**)&i);
 		pthread_join(thread_id, &exit_value);
 		
-		float result = *(float *) exit_value;
-		cout << "Resultado multiplicaciÃ³n es: \n " << result <<endl;
+		float result = *(float *) &exit_value;
+		cout << "Resultado multiplicaciÃ³n es: \n " << result << endl;
 	}
 	
 	pthread_attr_destroy(&attr);
