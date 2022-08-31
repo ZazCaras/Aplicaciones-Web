@@ -139,6 +139,14 @@
 										:items="lista"
 										class="elevation-1"
 									>
+										<template v-slot:item.edad="{ item }">
+											<v-chip
+												:color="tableAge(item.edad)"
+												dark
+											>
+											{{ item.edad }}
+											</v-chip>
+										</template>
 									</v-data-table>
 								</div>
 							</v-card>
@@ -230,6 +238,10 @@
 			},
 			clearCamps() {
 				this.$refs.form.reset()
+			},
+			tableAge(age) {
+				if (age < 35) {return 'blue'}
+				else {return 'grey'}
 			}
 		  },
 		  watch: {

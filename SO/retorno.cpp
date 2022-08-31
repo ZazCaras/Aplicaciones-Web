@@ -5,6 +5,8 @@ Modificado por: Kimberly Barrera
 Fecha: 08/11/2020
 Mod:   08/19/2022
 
+Nueva Modificacion: Diego Vallejo 08/30/2022
+
 retorno.cpp
 Comparte desde subrutina argumento puntero
 de tipo void, por medio de return.
