@@ -86,34 +86,59 @@
 								<div style="padding: 10px;">
 									<v-form
 										ref="form"
-										@submit.prevent="submit"
+										v-model="valid"
+										lazy-validation
 									>
-										<v-snackbar
-											v-model="snackbar", 
-											bottom="success"
-										>
-										</v-snackbar>
-										<v-text-field v-model="formulario.nombres" label="Nombre(s)"></v-text-field>
-										<v-text-field v-model="formulario.apellidos" label="Apellido(s)"></v-text-field>
+										<v-text-field required v-model="formulario.nombres" label="Nombre(s)" :rules="rules.nombre"></v-text-field>
+										<v-text-field required v-model="formulario.apellidos" label="Apellido(s)" :rules="rules.apellido"></v-text-field>
 										<v-select 
+											required
 											v-model="formulario.genero"
 											:items="genders"
 											:rules="rules.genero"
 											label="Genero"
 										></v-select>
 										<v-slider
+											required
 											v-model="formulario.edad"
+											:rules="rules.age"
 											label="Edad"
 											color="blue"
 											min="1"
-											max="100"
+											max="69"
 											thumb-label
 										></v-slider>
-										<v-text-field v-model="formulario.email" label="Email"></v-text-field>
-										<v-text-field v-model="formulario.telefono" label="Telefono"></v-text-field>
+										<v-text-field required v-model="formulario.email" :rules="rules.email" label="Email"></v-text-field>
+										<v-text-field required v-model="formulario.telefono" :rules="rules.telefono" label="Telefono"></v-text-field>
 										<v-textarea v-model="formulario.comentarios" label="Comentarios"></v-textarea>
-										<v-btn color="blue">Guardar</v-btn>
+										<v-btn color="blue" @click="submitForm" :disabled="!valid">Guardar</v-btn>
+										<v-btn color="blue" @click="clearCamps" >Limpiar Campos</v-btn>
+										
 									</v-form>
+									<div class="text-center"> 
+										<v-snackbar
+											v-model="snackbar"
+											:multi-line="multiLine"
+										>
+											<div class="text-center">
+												{{ text_snackbar }}
+												<v-btn
+												
+													color="blue"
+													@click="snackbar = false"
+												>
+													Cerrar
+												</v-btn>
+											</div>
+										</v-snackbar>
+									</div>
+									<br/>
+									<v-data-table
+										:headers="headers"
+										:items="lista"
+										class="elevation-1"
+									>
+									</v-data-table>
 								</div>
 							</v-card>
 						</v-col>
@@ -168,14 +193,57 @@
 				telefono: "",
 				comentarios: ""
 			},
+			valid: true,
 			lista: [],
 			genders: ['Masculino', 'Femenino', 'Otro'],
 			rules: {
-				age: [val => val < 18 || 'Debe de ser mayor de 18 años para continuar.'],
-				genero: [val => (val || '').length > 0 || 'Campo Requerido']
+				nombre: [val => (val || '').length > 0 || 'Campo Requerido'],
+				apellido: [val => (val || '').length > 0 || 'Campo Requerido'],
+				age: [val => val >= 18 || false],
+				genero: [val => (val || '').length > 0 || 'Campo Requerido'],
+				email: [val => /.+@.+\..+/.test(val) || 'El email debe ser valido.'],
+				telefono: [val => (val || '').length > 7 || 'Minimo 8 digitos']
 			},
 			snackbar: false,
+			multiLine: true,
+			text_snackbar: "",
+			headers: [
+				{text: "Nombre(s)", value:"nombres"},
+				{text: "Apellido(s)", value:"apellidos"},
+				{text: "Genero", value: "genero"},
+				{text: "Edad", value: "edad"},
+				{text: "Email", value: "email"},
+				{text: "Telefono", value: "telefono"},
+				{text: "Comentarios", value: "comentarios"}
+			],
+
 		  },
+		  methods: {
+			submitForm() {
+				this.$refs.form.validate()
+				tempForm = {...this.formulario}
+				let temp = this.lista
+				temp.push(tempForm)
+				this.snackbar = true
+				this.text_snackbar = ("Bienvenido: " + this.formulario.nombres + " " + this.formulario.apellidos + ", en breve le enviaremos un correo electronico con informacion a: " + this.formulario.email)
+			},
+			clearCamps() {
+				this.$refs.form.reset()
+			}
+		  },
+		  watch: {
+			"formulario.edad": function (nuevo, viejo) {
+				if (nuevo < 18) {
+					this.snackbar = true
+					this.text_snackbar = ("Hola, " + this.formulario.nombres + " " + this.formulario.apellidos + ", usted no puede recibir informacion poorque no cumple con la mayoria de edad")
+				}
+				else {
+					this.snackbar = true
+					this.text_snackbar = ("Usted si cumple con la mayoría de edad, puede enviar el formulario.")
+				}
+			}
+		  }
+
 		})
 	  </script>
 </html>
