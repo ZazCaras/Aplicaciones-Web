@@ -23,6 +23,7 @@ const int THREAD_COUNT = 10;
 long double sum = 0.0;
 int flag = 0;
 
+pthread_mutex_t vestidor; 
 //------------
 // Serie para calculo de PI
 //------------
@@ -36,7 +37,7 @@ void *threadSum(void *thread_rank)
 	//---- Rango de datos para cada hilo
 	long long my_first_i = my_n * my_rank;
 	long long my_last_i = my_first_i + my_n;
-	
+
 	if(my_first_i % 2 == 0)		//Orden de dato inicial es para
 		factor = 1.0;
 	else
@@ -46,21 +47,24 @@ void *threadSum(void *thread_rank)
 	for(i=my_first_i; i<my_last_i; i++, factor = -factor)
 	{
 		my_sum += factor/(2 * i + 1);  //*** Suma local
+
 	}
+	pthread_mutex_lock(&vestidor);
 
 	//---- Busy-waiting para actualizar variable y bandera global
-	while(flag != my_rank);
-		sum += my_sum;  //Copia del resultado parcial del hilo a mem-global
-	flag = (flag + 1) % THREAD_COUNT;
+	sum += my_sum;  //Copia del resultado parcial del hilo a mem-global
+	//flag = (flag + 1) % THREAD_COUNT;
+	pthread_mutex_unlock(&vestidor);
+	pthread_exit(NULL);
 	
 	return NULL;
 }
 
 int main()
 {
-	int i, rc;
+	long long i, rc;
 	pthread_t threads[THREAD_COUNT];
-	
+	pthread_mutex_init(&vestidor, NULL);
 	for(i=0;i<THREAD_COUNT;i++)
 	{
 		rc = pthread_create(&threads[i],NULL,threadSum,(void *)i);
@@ -85,6 +89,7 @@ int main()
 			exit(-1);
 		}
 	}
+	pthread_mutex_destroy(&vestidor);
 	printf("PI= %.10Lf\n",4.0*sum);
 	return 0;
 }
