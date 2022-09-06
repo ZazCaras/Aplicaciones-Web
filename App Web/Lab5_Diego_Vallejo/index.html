@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Mi Tienda</title>
+        <script src="https://unpkg.com/vue@3"></script>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	</head>
+
+	<div id="app">
+		<v-app>
+			<v-main class="purple darken-4">
+				<v-container>
+                    <v-row>
+                        <v-col sm="12" lg="12">
+                            <div class="d-flex justify-center">
+                                <h1 style="color:white">
+                                    Mi Tienda, Luna de Plutón
+                                </h1>
+                            </div> 
+                        </v-col>
+                    </v-row>
+
+					<v-row>
+                        <v-col sm="12" lg="6">
+                            <v-card
+                                elevation="4"
+                                outlined
+                                class="red accent-3"
+                                style="padding: 20px"
+                            >
+                            <v-row>
+                                <v-col sm="12" lg="4">
+                                    <v-card class="white">
+                                        <v-img
+                                            src="./images/canela.jpg"
+                                            class="mx-auto my-auto"
+                                        >
+                                        </v-img>
+                                        <v-card-title>Canela</v-card-title>
+                                        <v-card-text >
+                                            Es un gran ingrediente para hornear pan aunque también contrasta muy bien con la carne roja.
+                                        </v-card-text>
+                                        <v-row>
+                                            <v-col class="text-center">
+                                                <v-btn class="purple darken-4">
+                                                    <p style="color: white; margin-top: 10px">+ 1</p>
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+
+                                    </v-card>
+                                </v-col>
+                                <v-col sm="12" lg="4">
+                                    <v-card class="white">
+                                        <v-img
+                                            src="./images/canela.jpg"
+                                            class="mx-auto my-auto"
+                                        >
+                                        </v-img>
+                                        <v-card-title>Canela</v-card-title>
+                                        <v-card-text >
+                                            Es un gran ingrediente para hornear pan aunque también contrasta muy bien con la carne roja.
+                                        </v-card-text>
+                                        <v-row>
+                                            <v-col class="text-center">
+                                                <v-btn class="purple darken-4">
+                                                    <p style="color: white; margin-top: 10px">+ 1</p>
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+
+                            </v-card>
+                        </v-col>
+
+                        <v-col sm="12" lg="6">
+                            <v-card
+                                elevation="4"
+                                outlined
+                                class="red accent-3"
+                                style="padding: 20px"
+                            >
+                                <v-row>
+                                    <v-col sm="12" lg="12">
+                                        <v-card class="white">
+                                            <v-row>
+                                                <v-col sm="12" lg="5">
+                                                    <v-img
+                                                    src="./images/canela.jpg"
+                                                    class="my-auto mx-auto"
+                                                    >
+                                                    </v-img>
+                                                </v-col>
+                                                <v-col sm="12" lg="7">
+                                                    <v-card-title>Canela</v-card-title>
+                                                    <v-card-text >
+                                                        Es un gran ingrediente para hornear pan aunque también contrasta muy bien con la carne roja.
+                                                    </v-card-text>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card>
+                                        <br/>
+                                        <br/>
+                                        <v-card class="white">
+                                            <v-row>
+                                                <v-col sm="12" lg="5">
+                                                    <v-img
+                                                    src="./images/canela.jpg"
+                                                    class="my-auto mx-auto"
+                                                    >
+                                                    </v-img>
+                                                </v-col>
+                                                <v-col sm="12" lg="7">
+                                                    <v-card-title>Canela</v-card-title>
+                                                    <v-card-text >
+                                                        Es un gran ingrediente para hornear pan aunque también contrasta muy bien con la carne roja.
+                                                    </v-card-text>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+
+                                </v-card>
+                            </v-card>
+                        </v-col> 
+					</v-row>
+				</v-container>
+			</v-main>
+		</v-app>
+	</div>
+    <script src="../js/code.js" type="text/javascript"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        Vue.component("Carrito", {
+            data() {
+                
+            },
+            props: ['productos']
+        })
+    </script>
+
+    <script>
+        Vue.component("Lista", {
+            data() {
+                
+            },
+            methods: {
+                addItem() {
+                    this.productos[id].cantidad
+                }
+            }
+        })
+    </script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                productos: [
+                    {
+                        nombre: "Canela",
+                        descripcion: "Es un gran ingrediente para hornear pan aunque también contrasta muy bien con la carne roja.",
+                        imagen: "./images/canela.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Pimienta Rosa",
+                        descripcion: "Pica menos que las demás pimientas y se utiliza como aromatizante en postres o sazonador de carnes blancas y cerdo.",
+                        imagen: "./images/pimientarosa.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Nuez Moscada", 
+                        descripcion: "Sabor dulce y terroso es muy importante en la salsa bechamel y las tartas de manzana.",
+                        imagen: "./images/nuezmoscada.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Cúrcuma",
+                        descripcion: "Es muy buena para desinflamar y curar enfermedades respiratorias, aporta mucha profundidad y equilibra sabores.",
+                        imagen: "./images/curcuma.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Jengibre",
+                        descripcion: "Proporciona un toque picante a las preparaciones, además es antibiótico y antiinflamatorio natural.",
+                        imagen: "./images/jengibre",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Wasabe", 
+                        descripcion: "Se usa en pequeñas proporciones por su intenso aroma y pungencia.",
+                        imagen: "./images/wasabe.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Paprika", 
+                        descripcion: "En Europa le llaman pimentón o guindas a los chiles conocidos como secos en México. Por el tipo de suelo desarrollan una pungencia moderada.",
+                        imagen: "./images/paprika.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Azafrán", 
+                        descripcion: "Tiene propiedades antidepresivas y antioxidantes. Es el colorante tradicional de la paella, y también va muy bien con mariscos y sopas.",
+                        imagen: "./images/azafran.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Comino", 
+                        descripcion: "Esta semilla delgada y alargada potencia su sabor amargo y especiado al calentarse.",
+                        imagen: "./images/comino.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    },
+                    {
+                        nombre: "Achiote", 
+                        descripcion: "El sabor es ácido y dulce, y es el ingrediente que le da color a la cochinitia pibil.",
+                        imagen: ".images/achiote.jpg",
+                        cantidad: 0,
+                        posicion: null
+                    }
+
+                ]
+            }
+        })
+    </script>
+</html>
