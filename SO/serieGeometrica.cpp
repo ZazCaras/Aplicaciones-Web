@@ -33,13 +33,13 @@ void *threadSum(void *thread_rank)
 	//---- Lote de datos de cada thread
 	long long my_n = N/THREAD_COUNT;
 	//---- Rango de datos para cada hilo
-	long long my_first_i = my_n * my_rank;
+	long long my_first_i = (my_n * my_rank) + 1;
 	long long my_last_i = my_first_i + my_n;
 	
 	//---- Magnitud de cada elemento de la serie
 	for(i=my_first_i; i<my_last_i; i++)
 	{
-		my_sum += 1/(i*(i+1));  //*** Suma local
+		my_sum += 1/(double)(i*(i+1));
 
 	}
 	pthread_mutex_lock(&vestidor);
@@ -76,6 +76,6 @@ int main()
 		}
 	}
 	pthread_mutex_destroy(&vestidor);
-	printf("PI= %.10Lf\n",4.0*sum);
+	printf("VALOR= %.10Lf\n",sum);
 	return 0;
 }
