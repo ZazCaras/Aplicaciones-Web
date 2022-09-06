@@ -33,13 +33,13 @@ void *threadSum(void *thread_rank)
 	//---- Lote de datos de cada thread
 	long long my_n = N/THREAD_COUNT;
 	//---- Rango de datos para cada hilo
-	long long my_first_i = (my_n * my_rank) + 1;
+	long long my_first_i = (my_n * my_rank) + 1;//se agrega el + 1 para no comenzar en 0
 	long long my_last_i = my_first_i + my_n;
 	
 	//---- Magnitud de cada elemento de la serie
 	for(i=my_first_i; i<my_last_i; i++)
 	{
-		my_sum += 1/(double)(i*(i+1)); //cambio de serie de pi a serie utilizada.
+		my_sum += 1/(double)(i*(i+1)); //cambio de serie de pi a serie 1/(i*(i+1))
 
 	}
 	pthread_mutex_lock(&vestidor);
