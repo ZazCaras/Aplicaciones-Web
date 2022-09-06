@@ -39,14 +39,12 @@ void *threadSum(void *thread_rank)
 	//---- Magnitud de cada elemento de la serie
 	for(i=my_first_i; i<my_last_i; i++)
 	{
-		my_sum += 1/(double)(i*(i+1));
+		my_sum += 1/(double)(i*(i+1)); //cambio de serie de pi a serie utilizada.
 
 	}
 	pthread_mutex_lock(&vestidor);
 
-	//---- Busy-waiting para actualizar variable y bandera global
 	sum += my_sum;  //Copia del resultado parcial del hilo a mem-global
-	//flag = (flag + 1) % THREAD_COUNT;
 	pthread_mutex_unlock(&vestidor);
 	pthread_exit(NULL);
 	
