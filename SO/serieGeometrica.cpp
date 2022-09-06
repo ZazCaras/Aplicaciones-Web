@@ -7,8 +7,8 @@
  */
  
 #include <iostream>
-#include <stdio.h>		//printf
-#include <cmath>		//pow
+#include <stdio.h>		
+#include <cmath>		
 #include <pthread.h>	
 
 using namespace std;
