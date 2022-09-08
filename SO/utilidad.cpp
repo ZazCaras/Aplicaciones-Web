@@ -23,7 +23,7 @@ long long utilidad_agosto = 0.0;
 pthread_mutex_t vestidor; 
 
 void *julio(void *item) {
-    return NULL; 
+    return NULL;
 };
 
 void *agosto(void *item) {
