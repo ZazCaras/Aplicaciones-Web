@@ -11,18 +11,23 @@
 #include <cmath>		
 #include <pthread.h>
 #include <vector>
+#include <numeric>
 
 using namespace std;
 
 const int JULIO = 8;
-long long ventas_julio = 0.0;
-long long utilidad_julio = 0.0;
+long long ventas_total_julio = 0.0;
+long long utilidad_total_julio = 0.0;
 vector<int> unidad_julio{300, 400, 1590, 200, 390, 1455, 800, 60};
+vector<double>ventas_julio(8);
+vector<double>utilidad_julio(8);
 
 const int AGOSTO = 8;
-long long ventas_agosto = 0.0;
-long long utilidad_agosto = 0.0;
+long long ventas_total_agosto = 0.0;
+long long utilidad_total_agosto = 0.0;
 vector<int> unidad_agosto{250, 380, 800, 250, 600, 1200, 1540, 15};
+vector<double>ventas_agosto(8);
+vector<double>utilidad_agosto(8);
 
 //el join de los hilos por separadoooooo
 pthread_mutex_t vestidorJulio, vestidorAgosto; 
@@ -34,10 +39,12 @@ vector<string> nombres{"Porcion Pastelito Chocolate", "White Mocha", "Cafe ameri
 void *julio(void *item) {
     long valor = (long)item;
     long long ventasProducto, utilidadProducto, totalVentas, totalUtilidad;
-
+    pthread_mutex_lock(&vestidorJulio);
     ventasProducto = unidad_julio[valor] * precio[valor];
-    utilidadProducto = ventasProducto - costo[valor];
-    cout << ventasProducto << utilidadProducto << endl; 
+    utilidadProducto = ventasProducto - (costo[valor] * unidad_julio[valor]);
+    ventas_julio[valor] = ventasProducto;
+    utilidad_julio[valor] = utilidadProducto;
+    pthread_mutex_unlock(&vestidorJulio);
 
     return NULL;
 };
@@ -45,10 +52,13 @@ void *julio(void *item) {
 void *agosto(void *item) {
     long valor = (long)item;
     long long ventasProducto, utilidadProducto, totalVentas, totalUtilidad;
-
+    pthread_mutex_lock(&vestidorAgosto);
     ventasProducto = unidad_agosto[valor] * precio[valor];
-    utilidadProducto = ventasProducto - costo[valor];
-    cout << ventasProducto << utilidadProducto << endl; 
+    utilidadProducto = ventasProducto - (costo[valor] * unidad_agosto[valor]);
+    ventas_agosto[valor] = ventasProducto;
+    utilidad_agosto[valor] = utilidadProducto;
+    pthread_mutex_unlock(&vestidorAgosto);
+
     return NULL;
 };
 
@@ -58,12 +68,47 @@ int main() {
     pthread_mutex_init(&vestidorJulio, NULL);
     pthread_mutex_init(&vestidorAgosto, NULL);
 
-    for(j = 0; j < JULIO; j++) {
-        rcJ = pthread_create(&threadsJulio[j], NULL, julio, (void *)j);
+    for(long long i = 0; i < JULIO; i++) {
+        rcJ = pthread_create(&threadsJulio[i], NULL, julio, (void *)i);
+    }
+    for(long long i = 0; i < JULIO; i++) {
+        rcJ = pthread_join(threadsJulio[i], NULL);
+    }
+    pthread_mutex_destroy(&vestidorJulio);
 
+
+    for(long long i = 0; i < AGOSTO; i++) {
+        rcA = pthread_create(&threadsAgosto[i], NULL, julio, (void *)i);
     }
-    for(a = 0; a < AGOSTO; a++) {
-        rcA = pthread_create(&threadsAgosto[a], NULL, julio, (void *)a);
+    for(long long i = 0; i < JULIO; i++) {
+        rcA = pthread_join(threadsAgosto[i], NULL);
     }
+    pthread_mutex_destroy(&vestidorAgosto);
+
+    cout << "--- REPORTE DEL MES DE JULIO ---\n" << endl;
+    cout << "- Ventas por producto -" << endl;
+    for(int i = 0; i < JULIO; i++) {
+        cout << nombres[i] << ": Q." << ventas_julio[i] << endl;
+    }
+    cout << "\n- Utilidad por producto -" << endl;
+    for (int i = 0; i < JULIO; i++) {
+        cout << nombres[i] << ": Q." << utilidad_julio[i] << endl;
+    }
+    int costos_julio = 45640;
+    cout << "\nTotal ventas: Q." << accumulate(ventas_julio.begin(), ventas_julio.end(), 0) << endl;
+    cout << "Costos variables: Q." << costos_julio << endl;
+    cout << "Utilidad del mes: Q." << (accumulate(utilidad_julio.begin(), utilidad_julio.end(), 0) - costos_julio) << "\n" << endl;
+
+    cout << "--- REPORTE DEL MES DE AGOSTO ---\n" << endl; 
+    cout << "- Ventas por producto -" << endl;
+    for (int i = 0; i < AGOSTO; i++) {
+        cout << nombres[i] << ": Q." << ventas_agosto[i] << endl;
+    }
+    cout << "\n- Utilidad por producto -" << endl;
+    for (int i = 0; i < AGOSTO; i++) {
+        cout << nombres[i] << ": Q." << utilidad_agosto[i] << endl;
+    }
+    
+    pthread_mutex_destroy(&vestidorAgosto);
 };
 
