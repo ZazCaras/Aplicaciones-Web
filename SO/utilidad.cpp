@@ -11,6 +11,7 @@
 #include <cmath>		
 #include <pthread.h>
 #include <vector>
+#include <unistd.h>
 #include <numeric>
 
 using namespace std;
@@ -39,12 +40,15 @@ vector<string> nombres{"Porcion Pastelito Chocolate", "White Mocha", "Cafe ameri
 void *julio(void *item) {
     long valor = (long)item;
     long long ventasProducto, utilidadProducto, totalVentas, totalUtilidad;
+    cout << "calculo hilo JULIO " << valor << " iniciado." << endl;
+    sleep(1);
     pthread_mutex_lock(&vestidorJulio);
     ventasProducto = unidad_julio[valor] * precio[valor];
     utilidadProducto = ventasProducto - (costo[valor] * unidad_julio[valor]);
     ventas_julio[valor] = ventasProducto;
     utilidad_julio[valor] = utilidadProducto;
     pthread_mutex_unlock(&vestidorJulio);
+    cout << "calculo hilo JULIO " << valor << " terminado." << endl;
 
     return NULL;
 };
@@ -52,12 +56,16 @@ void *julio(void *item) {
 void *agosto(void *item) {
     long valor = (long)item;
     long long ventasProducto, utilidadProducto, totalVentas, totalUtilidad;
+    cout << "calculo hilo AGOSTO " << valor << " iniciado." << endl;
+    sleep(1);
     pthread_mutex_lock(&vestidorAgosto);
     ventasProducto = unidad_agosto[valor] * precio[valor];
     utilidadProducto = ventasProducto - (costo[valor] * unidad_agosto[valor]);
     ventas_agosto[valor] = ventasProducto;
     utilidad_agosto[valor] = utilidadProducto;
     pthread_mutex_unlock(&vestidorAgosto);
+    cout << "calculo hilo AGOSTO " << valor << " terminado." << endl;
+
 
     return NULL;
 };
@@ -71,18 +79,20 @@ int main() {
     for(long long i = 0; i < JULIO; i++) {
         rcJ = pthread_create(&threadsJulio[i], NULL, julio, (void *)i);
     }
+
+    for(long long i = 0; i < AGOSTO; i++) {
+        rcA = pthread_create(&threadsAgosto[i], NULL, agosto, (void *)i);
+    }
+    
     for(long long i = 0; i < JULIO; i++) {
         rcJ = pthread_join(threadsJulio[i], NULL);
     }
-    pthread_mutex_destroy(&vestidorJulio);
-
-
     for(long long i = 0; i < AGOSTO; i++) {
-        rcA = pthread_create(&threadsAgosto[i], NULL, julio, (void *)i);
-    }
-    for(long long i = 0; i < JULIO; i++) {
         rcA = pthread_join(threadsAgosto[i], NULL);
     }
+
+    pthread_mutex_destroy(&vestidorJulio);
+
     pthread_mutex_destroy(&vestidorAgosto);
 
     cout << "--- REPORTE DEL MES DE JULIO ---\n" << endl;
@@ -108,7 +118,9 @@ int main() {
     for (int i = 0; i < AGOSTO; i++) {
         cout << nombres[i] << ": Q." << utilidad_agosto[i] << endl;
     }
-    
-    pthread_mutex_destroy(&vestidorAgosto);
-};
+    int costos_agosto = 40590;
+    cout << "\nTotal ventas: Q." << accumulate(ventas_agosto.begin(), ventas_agosto.end(), 0) << endl;
+    cout << "Costos variables: Q." << costos_agosto << endl;
+    cout << "Utilidad del mes: Q." << (accumulate(utilidad_agosto.begin(), utilidad_agosto.end(), 0) - costos_agosto) << "\n" << endl;
 
+};
