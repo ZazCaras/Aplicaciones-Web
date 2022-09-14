@@ -1,4 +1,4 @@
-# test
+# lab6_diego_vallejo
 
 ## Project setup
 ```
