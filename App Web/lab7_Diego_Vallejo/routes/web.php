@@ -18,7 +18,7 @@ use App\Http\Controllers\ProfeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('cursos');
 });
 
 Route::resource("cursos", CursosController::class);
