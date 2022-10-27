@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CarritoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,9 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::apiResource("productos", ProductoController::class);
+Route::apiResource("carritos", CarritoController::class);
 
 Route::get('/', function () {
     return Inertia::render('Carts', [

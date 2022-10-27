@@ -1,7 +1,7 @@
 <script>
     import Carrito from '../Components/Carrito.vue'
     import Lista from '../Components/Lista.vue'
-    import { VDataIterator, VRow, VCol, VImg, VCardTitle, VCardText, VCardActions, VBtn, VTextField } from 'vuetify/components';
+    import { VRow, VCol, VImg, VCardTitle, VCardText, VCardActions, VBtn, VTextField } from 'vuetify/components';
 
     export default {
         name: "Carts",
@@ -19,7 +19,7 @@
                     <v-row>
                         <v-col sm="12" lg="12">
                             <div class="d-flex justify-center">
-                                <h1 style="color:white">
+                                <h1 style="color:black">
                                     Mi Tienda, Luna de Plutón
                                 </h1>
                             </div> 
@@ -46,7 +46,7 @@
                                 class="red accent-3"
                                 style="padding: 20px"
                             >
-                            <h1 style="color:white">Carrito</h1>
+                            <h1 style="color:black">Carrito</h1>
                             <br/>
 
                                 <Carrito></Carrito>

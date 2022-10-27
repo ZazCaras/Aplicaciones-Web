@@ -1,25 +1,32 @@
 <script> 
-    import { VDataIterator, VRow, VCol, VImg, VCardTitle, VCardText, VCardActions, VBtn, VTextField } from 'vuetify/components';
+    import { VRow, VCol, VImg, VCardTitle, VCardText, VCardActions, VBtn, VTextField } from 'vuetify/components';
 
     export default {
-        name: 'Carrito'
+        name: 'Carrito',
+        data: () => ({
+            lista: []
+        }),
+        mounted () {
+            axios.get("/carritos")
+            .then(response => {
+                console.log(response.data.carritos)
+                this.lista = response.data.carritos
+            })
+        },
     }
 </script>
 <template>
     <div>
         <v-row>
             <v-col sm="12" lg="12"
-                v-for="item in carrito"
-                :key="item.nombre"
-                :nombre="item.nombre"
-                :descripcion="item.descripcion"
-                :cantidad="item.cantidad"
+                v-for="item in lista"
+                :key="item.id"
             >
-                <v-card class="white">
+                <v-card class="blue">
                     <v-row>
                         <v-col sm="12" lg="5">
                             <v-img
-                            :src="item.imagen"
+                            :src="item.url"
                             class="my-auto mx-auto"
                             >
                             </v-img>
